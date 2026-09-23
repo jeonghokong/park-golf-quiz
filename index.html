@@ -17,13 +17,13 @@
 .next{width:100%;border:0;border-radius:13px;min-height:52px;background:var(--green);color:#fff;font-size:17px;font-weight:800;cursor:pointer}
 .details{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:#fafcfb;overflow:hidden}.details summary{padding:13px 14px;font-weight:700;cursor:pointer;list-style:none}.details summary::-webkit-details-marker{display:none}.details summary:after{content:"＋";float:right}.details[open] summary:after{content:"－"}.explain{padding:0 14px 14px;line-height:1.55;font-size:14px}.source{font-size:12px;color:var(--muted);margin-top:7px}
 .score{text-align:center;color:var(--muted);font-size:13px;margin-top:12px}.finish{text-align:center;padding:18px 0}.finish .big{font-size:40px;font-weight:850;color:var(--green)}.finishBtns{display:grid;gap:10px;margin-top:18px}.finish button{border:0;border-radius:13px;padding:14px;background:var(--green);color:#fff;font-weight:750;font-size:16px}.finish button.secondary{background:#edf3ef;color:var(--green)}
-.note{font-size:11px;color:var(--muted);text-align:center;margin-top:12px}
+.homeIntro{text-align:center;padding:14px 4px 18px}.homeIntro h2{font-size:24px;margin:0 0 8px}.homeIntro p{margin:0;color:var(--muted);font-size:14px}.round{border:1px solid var(--line);border-radius:15px;padding:17px;background:#fff}.roundTitle{font-size:19px;font-weight:800}.roundMeta{font-size:13px;color:var(--muted);margin:5px 0 13px}.roundStats{font-size:13px;color:var(--green);margin-bottom:12px}.startBtn,.homeBtn{width:100%;border:0;border-radius:12px;min-height:50px;background:var(--green);color:#fff;font-size:16px;font-weight:800;cursor:pointer}.homeBtn{background:#edf3ef;color:var(--green)}.note{font-size:11px;color:var(--muted);text-align:center;margin-top:12px}
 @media(max-width:480px){.wrap{padding:8px 10px 22px}.card{padding:16px}.q{font-size:20px;min-height:88px}.choice{min-height:68px}.head h1{font-size:19px}}
 </style>
 </head>
 <body>
 <main class="wrap">
-<header class="head"><h1>파크골프 자격시험</h1><p>제1회 · 기본이론 OX 20문제</p></header>
+<header class="head"><h1>파크골프 자격시험</h1><p id="subtitle">문제풀이</p></header>
 <section class="card" id="quiz">
 <div class="top"><span id="cat"></span><span id="progress"></span></div>
 <div class="progressbar"><span id="bar"></span></div>
@@ -78,15 +78,21 @@ function answer(v,btn){
 }
 document.querySelectorAll(".choice").forEach(b=>b.addEventListener("click",()=>answer(b.dataset.v==="true",b)));
 $("next").addEventListener("click",()=>{if(mode==="review"){if(reviewPos<reviewList.length-1){reviewPos++;i=reviewList[reviewPos];render();return;}reviewFinish();return;}if(i<questions.length-1){i++;render();return;}finish();});
+function showHome(){
+ mode="normal"; const savedScore=localStorage.getItem("parkGolfQuizRound1Score"); let savedWrong=[]; try{savedWrong=JSON.parse(localStorage.getItem("parkGolfQuizRound1Wrong")||"[]")}catch(e){}
+ $("subtitle").textContent="회차를 선택해 주세요";
+ $("quiz").innerHTML='<div class="homeIntro"><h2>문제풀이</h2><p>학습할 회차를 선택하세요.</p></div><div class="round"><div class="roundTitle">1회차 · 기본이론</div><div class="roundMeta">OX · 20문제</div>'+(savedScore?'<div class="roundStats">최근 점수 '+savedScore+(savedWrong.length?" · 오답 "+savedWrong.length+"문제":"")+'</div>':'')+'<button class="startBtn" onclick="startRound()">문제 풀기 →</button></div>';
+}
+window.startRound=()=>{i=0;correct=0;answered=0;wrong=[];mode="normal"; $("subtitle").textContent="제1회 · 기본이론 OX 20문제"; $("quiz").innerHTML='<div class="top"><span id="cat"></span><span id="progress"></span></div><div class="progressbar"><span id="bar"></span></div><div class="q" id="question"></div><div class="answers ox" id="answers"><button class="choice" data-v="true">O</button><button class="choice" data-v="false">X</button></div><div class="after" id="after"><div class="status" id="status"></div><button class="next" id="next" type="button">다음 문제 →</button><details class="details" id="details"><summary>해설 보기</summary><div class="explain"><div id="explain"></div><div class="source" id="source"></div></div></details></div><div class="score" id="score">정답 0 / 0</div>'; bindQuiz(); render();};
 function finish(){
  const pct=Math.round(correct/questions.length*100);
- $("quiz").innerHTML='<div class="finish"><div>1회차 완료</div><div class="big">'+correct+' / '+questions.length+'</div><p>정답률 '+pct+'%</p><div class="finishBtns">'+(wrong.length?'<button onclick="reviewWrong()">틀린 문제 다시보기 ('+wrong.length+')</button>':'')+'<button class="secondary" onclick="location.reload()">전체 다시 풀기</button></div></div>';
- localStorage.setItem("parkGolfQuizRound1Wrong",JSON.stringify(wrong));
+ $("quiz").innerHTML='<div class="finish"><div>1회차 완료</div><div class="big">'+correct+' / '+questions.length+'</div><p>정답률 '+pct+'%</p><div class="finishBtns">'+(wrong.length?'<button onclick="reviewWrong()">틀린 문제 다시보기 ('+wrong.length+')</button>':'')+'<button class="secondary" onclick="startRound()">전체 다시 풀기</button><button class="homeBtn" onclick="showHome()">회차 목록으로</button></div></div>';
+ localStorage.setItem("parkGolfQuizRound1Wrong",JSON.stringify(wrong)); localStorage.setItem("parkGolfQuizRound1Score",correct+" / "+questions.length);
 }
 window.reviewWrong=()=>{reviewList=[...wrong]; if(!reviewList.length)return; mode="review"; reviewPos=0; i=reviewList[0]; document.querySelector(".head p").textContent="제1회 · 틀린 문제 다시풀기"; $("quiz").innerHTML='<div class="top"><span id="cat"></span><span id="progress"></span></div><div class="progressbar"><span id="bar"></span></div><div class="q" id="question"></div><div class="answers ox" id="answers"><button class="choice" data-v="true">O</button><button class="choice" data-v="false">X</button></div><div class="after" id="after"><div class="status" id="status"></div><button class="next" id="next" type="button">다음 오답 →</button><details class="details" id="details"><summary>해설 보기</summary><div class="explain"><div id="explain"></div><div class="source" id="source"></div></div></details></div><div class="score" id="score"></div>'; bindQuiz(); render();};
 function bindQuiz(){document.querySelectorAll(".choice").forEach(b=>b.addEventListener("click",()=>answer(b.dataset.v==="true",b))); $("next").addEventListener("click",()=>{if(mode==="review"){if(reviewPos<reviewList.length-1){reviewPos++;i=reviewList[reviewPos];render();return;}reviewFinish();return;}if(i<questions.length-1){i++;render();return;}finish();});}
-function reviewFinish(){localStorage.setItem("parkGolfQuizRound1Wrong","[]"); $("quiz").innerHTML='<div class="finish"><div class="big">복습 완료</div><p>틀렸던 '+reviewList.length+'문제를 모두 다시 확인했습니다.</p><div class="finishBtns"><button onclick="location.reload()">1회차 처음부터 풀기</button></div></div>';}
-render();
+function reviewFinish(){localStorage.setItem("parkGolfQuizRound1Wrong","[]"); $("quiz").innerHTML='<div class="finish"><div class="big">복습 완료</div><p>틀렸던 '+reviewList.length+'문제를 모두 다시 확인했습니다.</p><div class="finishBtns"><button onclick="startRound()">1회차 처음부터 풀기</button><button class="homeBtn" onclick="showHome()">회차 목록으로</button></div></div>';}
+showHome();
 </script>
 </body>
 </html>
