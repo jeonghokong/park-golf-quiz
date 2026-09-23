@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>파크골프 자격시험 OX 퀴즈 - 1회차</title>
+<style>
+:root{--green:#176b43;--light:#eef7f2;--line:#d8e3dc;--text:#17211b;--muted:#66736b;--ok:#137a43;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;background:#f5f7f6;color:var(--text)}
+.wrap{max-width:680px;margin:auto;padding:20px 16px 44px}.head{text-align:center;padding:18px 0}.head h1{font-size:25px;margin:0 0 8px}.head p{margin:0;color:var(--muted)}
+.card{background:white;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 3px 14px rgba(0,0,0,.04)}
+.top{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:14px;margin-bottom:20px}.q{font-size:22px;line-height:1.55;font-weight:750;min-height:105px}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}.choice{border:2px solid var(--line);background:#fff;border-radius:16px;min-height:92px;font-size:30px;font-weight:800;cursor:pointer}.choice:hover{border-color:var(--green)}.choice:disabled{cursor:default;opacity:.6}
+.feedback{display:none;margin-top:20px;padding:17px;border-radius:14px;background:var(--light);line-height:1.55}.feedback.show{display:block}.result{font-size:19px;font-weight:800;margin-bottom:7px}.ok{color:var(--ok)}.bad{color:var(--bad)}.source{font-size:13px;color:var(--muted);margin-top:8px}
+.next{display:none;width:100%;margin-top:16px;border:0;border-radius:13px;min-height:52px;background:var(--green);color:white;font-size:17px;font-weight:750;cursor:pointer}.next.show{display:block}
+.score{margin-top:15px;text-align:center;color:var(--muted);font-weight:650}.finish{text-align:center;padding:20px 0}.finish .big{font-size:38px;font-weight:850;color:var(--green)}.restart{border:0;border-radius:13px;padding:14px 22px;background:var(--green);color:white;font-weight:750;font-size:16px;cursor:pointer;margin-top:18px}
+.note{font-size:13px;color:var(--muted);text-align:center;margin-top:14px}
+@media(max-width:480px){.q{font-size:20px}.choice{min-height:82px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="head"><h1>파크골프 자격시험 OX 퀴즈</h1><p>제1회 · 기본이론 20문제</p></header>
+<section class="card" id="quiz">
+<div class="top"><span id="cat">기본이론</span><span id="progress">1 / 20</span></div>
+<div class="q" id="question"></div>
+<div class="buttons" id="buttons">
+<button class="choice" id="o" type="button">⭕ O</button>
+<button class="choice" id="x" type="button">❌ X</button>
+</div>
+<div class="feedback" id="feedback"><div class="result" id="result"></div><div id="explain"></div><div class="source" id="source"></div></div>
+<button class="next" id="next" type="button">다음 문제</button>
+<div class="score" id="score">정답 0 / 0</div>
+</section>
+<p class="note">대한파크골프협회 자격검정 문제집의 내용과 정답 체계를 기준으로 구성</p>
+</main>
+<script>
+const questions=[
+{c:"파크골프 소개",q:"파크골프(Parkgolf)는 공원에서 골프를 한다는 의미의 합성어이다.",a:true,e:"O. 문제집에서 파크골프를 공원에서 골프를 하는 의미의 합성어로 설명합니다.",s:"표준문제 제1부 일반이론"},
+{c:"파크골프 소개",q:"파크골프는 게이트볼과 유사하여 주로 어르신만을 위한 운동이다.",a:false,e:"X. 어르신뿐 아니라 유소년 등 다양한 연령층에게 권장되는 스포츠입니다.",s:"표준문제 제1부 일반이론"},
+{c:"코스 구성",q:"파크골프장 1개 코스는 9홀로 구성되며 기준타수는 33타이다.",a:true,e:"O. 9홀 기준타수는 33타이며, 18홀은 66타입니다.",s:"표준문제 · 코스 구성"},
+{c:"코스 구성",q:"18홀은 Par3 8개, Par4 8개, Par5 2개로 구성된다.",a:true,e:"O. 문제집의 18홀 구성 기준입니다.",s:"표준문제 · 코스 구성"},
+{c:"코스 규격",q:"Par3 홀의 길이는 40~60m이다.",a:true,e:"O. Par3의 길이는 40~60m로 제시됩니다.",s:"표준문제 · 홀 길이"},
+{c:"코스 규격",q:"Par4 홀의 길이는 60~120m이다.",a:false,e:"X. 문제집 기준 Par4는 60~100m입니다.",s:"표준문제 · 홀 길이"},
+{c:"코스 규격",q:"Par5 홀의 길이는 100~150m이다.",a:true,e:"O. 단답형 해설에서 Par5는 100~150m로 제시됩니다.",s:"표준문제 · 홀 길이"},
+{c:"코스 규격",q:"9홀 코스의 합산 길이는 500~790m이다.",a:true,e:"O. 9홀 합산 길이는 500~790m이며 최소 500m로 제시됩니다.",s:"표준문제 · 코스 규격"},
+{c:"코스 표시",q:"A·B·C·D 코스의 깃발 색상은 각각 적색·청색·황색·백색이다.",a:true,e:"O. A 적색, B 청색, C 황색, D 백색입니다.",s:"표준문제 · 코스 식별"},
+{c:"코스 표시",q:"2개 코스로 구성된 18홀 파크골프장은 홀 번호를 1번부터 18번까지 연속으로 표시한다.",a:false,e:"X. 각 코스별로 1번부터 9번까지 표시합니다.",s:"표준문제 · 코스 표시"},
+{c:"시설",q:"그린의 크기는 지름 5m 이상을 기준으로 한다.",a:true,e:"O. 문제집의 그린 관련 문항에서 지름 5m 이상으로 제시됩니다.",s:"표준문제 · 경기장 시설"},
+{c:"시설",q:"그린의 잔디 길이는 20mm 이내이다.",a:true,e:"O. 문제집의 그린 잔디 길이 기준은 20mm 이내입니다.",s:"표준문제 · 경기장 시설"},
+{c:"시설",q:"티잉그라운드의 크기는 1.5m×1.5m에서 2m×2m 범위로 제시된다.",a:true,e:"O. 문제집의 티잉그라운드 규격입니다.",s:"표준문제 · 경기장 시설"},
+{c:"용구",q:"성인용 파크골프 클럽의 길이는 86cm 이하이다.",a:true,e:"O. 성인용 클럽 길이 기준은 86cm 이하입니다.",s:"표준문제 · 용구"},
+{c:"용구",q:"성인용 파크골프 클럽의 무게는 700g 이하이다.",a:false,e:"X. 문제집 기준 클럽 무게는 600g 이하입니다.",s:"표준문제 · 용구"},
+{c:"용구",q:"파크골프 공의 무게는 80~95g이다.",a:true,e:"O. 문제집에서 공의 무게를 80~95g으로 제시합니다.",s:"표준문제 · 용구"},
+{c:"용구",q:"파크골프 티의 높이는 2.3cm이다.",a:true,e:"O. 문제집 단답형에서 티 높이를 2.3cm로 제시합니다.",s:"표준문제 · 용구"},
+{c:"안전",q:"응급상황에서 골든타임의 기준은 4분이다.",a:true,e:"O. 안전관리 문항에서 골든타임을 4분으로 제시합니다.",s:"표준문제 · 안전관리"},
+{c:"경기규칙",q:"분실구를 찾는 시간은 5분이다.",a:false,e:"X. 문제집 기준 분실구 탐색 시간은 3분입니다.",s:"표준문제 · 경기규칙"},
+{c:"경기규칙",q:"홀컵 가장자리에 걸쳐 정지한 공은 10초 동안 홀인 여부를 기다릴 수 있다.",a:true,e:"O. 문제집에서는 홀컵 가장자리에 멈춘 공의 대기시간을 10초로 제시합니다.",s:"표준문제 · 경기규칙"}
+];
+let i=0,correct=0,answered=0;
+const $=id=>document.getElementById(id);
+function render(){
+ const v=questions[i]; $("cat").textContent=v.c; $("progress").textContent=(i+1)+" / "+questions.length; $("question").textContent=v.q;
+ $("feedback").classList.remove("show"); $("next").classList.remove("show"); $("o").disabled=false; $("x").disabled=false;
+}
+function answer(v){
+ const q=questions[i], ok=v===q.a; answered++; if(ok)correct++;
+ $("result").textContent=ok?"정답입니다.":"오답입니다. 정답은 "+(q.a?"O":"X")+"입니다.";
+ $("result").className="result "+(ok?"ok":"bad"); $("explain").textContent=q.e; $("source").textContent="출처: "+q.s;
+ $("feedback").classList.add("show"); $("o").disabled=true; $("x").disabled=true; $("score").textContent="정답 "+correct+" / "+answered;
+ $("next").textContent=i===questions.length-1?"결과 보기":"다음 문제"; $("next").classList.add("show");
+}
+$("o").addEventListener("click",()=>answer(true)); $("x").addEventListener("click",()=>answer(false));
+$("next").addEventListener("click",()=>{if(i<questions.length-1){i++;render();return;} const pct=Math.round(correct/questions.length*100);
+ $("quiz").innerHTML='<div class="finish"><div>1회차 완료</div><div class="big">'+correct+' / '+questions.length+'</div><p>'+pct+'점</p><button class="restart" type="button" onclick="location.reload()">다시 풀기</button></div>';
+});
+render();
+</script>
+</body>
+</html>
