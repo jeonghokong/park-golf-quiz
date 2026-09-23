@@ -2,34 +2,38 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>파크골프 자격시험 OX 퀴즈 - 1회차</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>파크골프 자격시험 문제풀이</title>
 <style>
-:root{--green:#176b43;--light:#eef7f2;--line:#d8e3dc;--text:#17211b;--muted:#66736b;--ok:#137a43;--bad:#b42318}
+:root{--green:#176b43;--green2:#eef7f2;--line:#dce5df;--text:#17211b;--muted:#6b766f;--bad:#b42318}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;background:#f5f7f6;color:var(--text)}
-.wrap{max-width:680px;margin:auto;padding:20px 16px 44px}.head{text-align:center;padding:18px 0}.head h1{font-size:25px;margin:0 0 8px}.head p{margin:0;color:var(--muted)}
-.card{background:white;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 3px 14px rgba(0,0,0,.04)}
-.top{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:14px;margin-bottom:20px}.q{font-size:22px;line-height:1.55;font-weight:750;min-height:105px}
-.buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}.choice{border:2px solid var(--line);background:#fff;border-radius:16px;min-height:92px;font-size:30px;font-weight:800;cursor:pointer}.choice:hover{border-color:var(--green)}.choice:disabled{cursor:default;opacity:.6}
-.feedback{display:none;margin-top:20px;padding:17px;border-radius:14px;background:var(--light);line-height:1.55}.feedback.show{display:block}.result{font-size:19px;font-weight:800;margin-bottom:7px}.ok{color:var(--ok)}.bad{color:var(--bad)}.source{font-size:13px;color:var(--muted);margin-top:8px}
-.next{display:none;width:100%;margin-top:16px;border:0;border-radius:13px;min-height:52px;background:var(--green);color:white;font-size:17px;font-weight:750;cursor:pointer}.next.show{display:block}
-.score{margin-top:15px;text-align:center;color:var(--muted);font-weight:650}.finish{text-align:center;padding:20px 0}.finish .big{font-size:38px;font-weight:850;color:var(--green)}.restart{border:0;border-radius:13px;padding:14px 22px;background:var(--green);color:white;font-weight:750;font-size:16px;cursor:pointer;margin-top:18px}
-.note{font-size:13px;color:var(--muted);text-align:center;margin-top:14px}
-@media(max-width:480px){.q{font-size:20px}.choice{min-height:82px}}
+.wrap{max-width:680px;margin:auto;padding:10px 14px 28px}.head{text-align:center;padding:8px 0 12px}.head h1{font-size:20px;margin:0 0 3px}.head p{font-size:13px;margin:0;color:var(--muted)}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 3px 14px rgba(0,0,0,.04)}
+.top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;margin-bottom:12px}
+.progressbar{height:4px;background:#edf1ee;border-radius:9px;margin:-3px 0 17px;overflow:hidden}.progressbar span{display:block;height:100%;background:var(--green);transition:width .2s}
+.q{font-size:21px;line-height:1.5;font-weight:760;min-height:94px}
+.answers{display:grid;gap:10px;margin-top:18px}.answers.ox{grid-template-columns:1fr 1fr}.choice{border:2px solid var(--line);background:#fff;border-radius:14px;min-height:72px;padding:12px;font-size:18px;font-weight:760;cursor:pointer;color:var(--text)}.ox .choice{font-size:34px}.choice.selected.correct{border-color:var(--green);background:var(--green2);color:var(--green)}.choice.selected.wrong{border-color:#e4a6a1;background:#fff3f2;color:var(--bad)}.choice:disabled{cursor:default}
+.after{display:none;margin-top:12px}.after.show{display:block}.status{font-size:16px;font-weight:800;margin:0 0 10px}.ok{color:var(--green)}.bad{color:var(--bad)}
+.next{width:100%;border:0;border-radius:13px;min-height:52px;background:var(--green);color:#fff;font-size:17px;font-weight:800;cursor:pointer}
+.details{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:#fafcfb;overflow:hidden}.details summary{padding:13px 14px;font-weight:700;cursor:pointer;list-style:none}.details summary::-webkit-details-marker{display:none}.details summary:after{content:"＋";float:right}.details[open] summary:after{content:"－"}.explain{padding:0 14px 14px;line-height:1.55;font-size:14px}.source{font-size:12px;color:var(--muted);margin-top:7px}
+.score{text-align:center;color:var(--muted);font-size:13px;margin-top:12px}.finish{text-align:center;padding:18px 0}.finish .big{font-size:40px;font-weight:850;color:var(--green)}.finishBtns{display:grid;gap:10px;margin-top:18px}.finish button{border:0;border-radius:13px;padding:14px;background:var(--green);color:#fff;font-weight:750;font-size:16px}.finish button.secondary{background:#edf3ef;color:var(--green)}
+.note{font-size:11px;color:var(--muted);text-align:center;margin-top:12px}
+@media(max-width:480px){.wrap{padding:8px 10px 22px}.card{padding:16px}.q{font-size:20px;min-height:88px}.choice{min-height:68px}.head h1{font-size:19px}}
 </style>
 </head>
 <body>
 <main class="wrap">
-<header class="head"><h1>파크골프 자격시험 OX 퀴즈</h1><p>제1회 · 기본이론 20문제</p></header>
+<header class="head"><h1>파크골프 자격시험</h1><p>제1회 · 기본이론 OX 20문제</p></header>
 <section class="card" id="quiz">
-<div class="top"><span id="cat">기본이론</span><span id="progress">1 / 20</span></div>
+<div class="top"><span id="cat"></span><span id="progress"></span></div>
+<div class="progressbar"><span id="bar"></span></div>
 <div class="q" id="question"></div>
-<div class="buttons" id="buttons">
-<button class="choice" id="o" type="button">⭕ O</button>
-<button class="choice" id="x" type="button">❌ X</button>
+<div class="answers ox" id="answers"><button class="choice" data-v="true">O</button><button class="choice" data-v="false">X</button></div>
+<div class="after" id="after">
+<div class="status" id="status"></div>
+<button class="next" id="next" type="button">다음 문제 →</button>
+<details class="details" id="details"><summary>해설 보기</summary><div class="explain"><div id="explain"></div><div class="source" id="source"></div></div></details>
 </div>
-<div class="feedback" id="feedback"><div class="result" id="result"></div><div id="explain"></div><div class="source" id="source"></div></div>
-<button class="next" id="next" type="button">다음 문제</button>
 <div class="score" id="score">정답 0 / 0</div>
 </section>
 <p class="note">대한파크골프협회 자격검정 문제집의 내용과 정답 체계를 기준으로 구성</p>
@@ -57,23 +61,29 @@ const questions=[
 {c:"경기규칙",q:"분실구를 찾는 시간은 5분이다.",a:false,e:"X. 문제집 기준 분실구 탐색 시간은 3분입니다.",s:"표준문제 · 경기규칙"},
 {c:"경기규칙",q:"홀컵 가장자리에 걸쳐 정지한 공은 10초 동안 홀인 여부를 기다릴 수 있다.",a:true,e:"O. 문제집에서는 홀컵 가장자리에 멈춘 공의 대기시간을 10초로 제시합니다.",s:"표준문제 · 경기규칙"}
 ];
-let i=0,correct=0,answered=0;
+let i=0,correct=0,answered=0,wrong=[];
 const $=id=>document.getElementById(id);
 function render(){
- const v=questions[i]; $("cat").textContent=v.c; $("progress").textContent=(i+1)+" / "+questions.length; $("question").textContent=v.q;
- $("feedback").classList.remove("show"); $("next").classList.remove("show"); $("o").disabled=false; $("x").disabled=false;
+ const v=questions[i]; $("cat").textContent=v.c; $("progress").textContent=(i+1)+" / "+questions.length; $("bar").style.width=((i+1)/questions.length*100)+"%"; $("question").textContent=v.q;
+ $("after").classList.remove("show"); $("details").open=false;
+ document.querySelectorAll(".choice").forEach(b=>{b.disabled=false;b.className="choice"});
 }
-function answer(v){
- const q=questions[i], ok=v===q.a; answered++; if(ok)correct++;
- $("result").textContent=ok?"정답입니다.":"오답입니다. 정답은 "+(q.a?"O":"X")+"입니다.";
- $("result").className="result "+(ok?"ok":"bad"); $("explain").textContent=q.e; $("source").textContent="출처: "+q.s;
- $("feedback").classList.add("show"); $("o").disabled=true; $("x").disabled=true; $("score").textContent="정답 "+correct+" / "+answered;
- $("next").textContent=i===questions.length-1?"결과 보기":"다음 문제"; $("next").classList.add("show");
+function answer(v,btn){
+ const q=questions[i],ok=v===q.a; answered++; if(ok)correct++; else wrong.push(i);
+ document.querySelectorAll(".choice").forEach(b=>b.disabled=true);
+ btn.classList.add("selected",ok?"correct":"wrong");
+ $("status").textContent=ok?"정답입니다.":"오답입니다. 정답은 "+(q.a?"O":"X")+"입니다.";
+ $("status").className="status "+(ok?"ok":"bad"); $("explain").textContent=q.e; $("source").textContent="출처: "+q.s;
+ $("score").textContent="정답 "+correct+" / "+answered; $("next").textContent=i===questions.length-1?"결과 보기 →":"다음 문제 →"; $("after").classList.add("show");
 }
-$("o").addEventListener("click",()=>answer(true)); $("x").addEventListener("click",()=>answer(false));
-$("next").addEventListener("click",()=>{if(i<questions.length-1){i++;render();return;} const pct=Math.round(correct/questions.length*100);
- $("quiz").innerHTML='<div class="finish"><div>1회차 완료</div><div class="big">'+correct+' / '+questions.length+'</div><p>'+pct+'점</p><button class="restart" type="button" onclick="location.reload()">다시 풀기</button></div>';
-});
+document.querySelectorAll(".choice").forEach(b=>b.addEventListener("click",()=>answer(b.dataset.v==="true",b)));
+$("next").addEventListener("click",()=>{if(i<questions.length-1){i++;render();return;}finish();});
+function finish(){
+ const pct=Math.round(correct/questions.length*100);
+ $("quiz").innerHTML='<div class="finish"><div>1회차 완료</div><div class="big">'+correct+' / '+questions.length+'</div><p>정답률 '+pct+'%</p><div class="finishBtns">'+(wrong.length?'<button onclick="reviewWrong()">틀린 문제 다시보기 ('+wrong.length+')</button>':'')+'<button class="secondary" onclick="location.reload()">전체 다시 풀기</button></div></div>';
+ localStorage.setItem("parkGolfQuizRound1Wrong",JSON.stringify(wrong));
+}
+window.reviewWrong=()=>{alert("오답 다시풀기는 다음 단계에서 회차 구조와 함께 연결합니다. 현재는 오답 "+wrong.length+"문제가 기기에 저장되었습니다.");};
 render();
 </script>
 </body>
