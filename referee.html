@@ -132,6 +132,10 @@ function toggleSave(){let a=saved();if(a.includes(idx))a=a.filter(n=>n!==idx);el
 function prev(){if(idx>0){idx--;render();scrollTo({top:0,behavior:"smooth"})}}
 function next(){if(idx<data.length-1){idx++;render();scrollTo({top:0,behavior:"smooth"})}}
 function renderSaved(){const a=saved();if(!a.length){app.innerHTML='<div class="qcard empty">저장한 문제가 없습니다.<br>문제 화면에서 <b>☆ 문제 저장</b>을 눌러 저장하세요.</div>';return}app.innerHTML='<div class="savedList">'+a.map(n=>'<button class="savedItem" onclick="openSaved('+n+')"><b>문제 '+(n+1)+'</b>'+data[n][0].replace(/\\n/g," ").slice(0,72)+'</button>').join("")+'</div>'}
-function openSaved(n){idx=n;showAll();scrollTo({top:0,behavior:"smooth"})}
+function openSaved(n){idx=n;mode="saved";document.getElementById("savedTab").classList.add("active");document.getElementById("allTab").classList.remove("active");renderSavedQuestion();scrollTo({top:0,behavior:"smooth"})}
+function renderSavedQuestion(){const a=saved();if(!a.includes(idx)){renderSaved();return}const p=a.indexOf(idx),x=data[idx];app.innerHTML='<article class="qcard"><div class="top"><span class="num">저장 문제 · 문제 '+(idx+1)+'</span><div class="topMove"><button onclick="prevSaved()" '+(p<=0?'disabled':'')+'>← 이전</button><span>'+(p+1)+' / '+a.length+'</span><button onclick="nextSaved()" '+(p>=a.length-1?'disabled':'')+'>다음 →</button></div></div><div class="q">'+x[0]+'</div><div class="ans show"><b>모범답안</b>\n'+x[1]+'\n\n<b>핵심</b> '+x[2]+'</div><div class="actions"><button class="answerBtn" onclick="showSaved()">← 저장 문제 목록</button><button class="saveBtn saved" onclick="toggleSaveFromSaved()">★ 저장됨</button></div></article>'}
+function prevSaved(){const a=saved(),p=a.indexOf(idx);if(p>0){idx=a[p-1];renderSavedQuestion();scrollTo({top:0,behavior:"smooth"})}}
+function nextSaved(){const a=saved(),p=a.indexOf(idx);if(p>=0&&p<a.length-1){idx=a[p+1];renderSavedQuestion();scrollTo({top:0,behavior:"smooth"})}}
+function toggleSaveFromSaved(){const a=saved().filter(n=>n!==idx);setSaved(a);renderSaved()}
 updateCount();render();
 </script></body></html>
