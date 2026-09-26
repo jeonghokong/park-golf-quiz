@@ -2,14 +2,17 @@
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>참고 : 심판용 · 파크골프 심판 실전 100문제</title>
 <style>
-:root{--g:#176b43;--gl:#eef7f2;--line:#dce5df;--t:#17211b;--m:#6b766f}
+:root{--g:#176b43;--gl:#eef7f2;--line:#dce5df;--t:#17211b;--m:#6b766f;--gold:#9b7416}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;background:#f5f7f6;color:var(--t)}
-.wrap{max-width:760px;margin:auto;padding:10px 12px 36px}.head{text-align:center;padding:10px 0 14px}.head h1{font-size:22px;margin:0 0 5px}.head p{margin:0;color:var(--m);font-size:13px}
-.nav{position:sticky;top:0;z-index:5;background:#f5f7f6eF;backdrop-filter:blur(8px);display:flex;gap:6px;padding:8px 0;overflow:auto}.nav a,.home{white-space:nowrap;text-decoration:none;border:1px solid var(--line);background:#fff;color:var(--g);padding:8px 10px;border-radius:10px;font-size:13px;font-weight:750}
-.qcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin:10px 0;box-shadow:0 2px 10px #00000008}.num{font-size:13px;color:var(--g);font-weight:800;margin-bottom:7px}.q{font-size:17px;line-height:1.55;font-weight:720;white-space:pre-line}
-.toggle{margin-top:13px;border:0;background:var(--g);color:#fff;border-radius:10px;padding:10px 14px;font-weight:800;font-size:14px}.ans{display:none;margin-top:12px;padding:13px 14px;background:var(--gl);border-radius:11px;line-height:1.58;font-size:14px;white-space:pre-line}.ans.show{display:block}.ans b{color:var(--g)}.note{text-align:center;color:var(--m);font-size:11px;margin:18px 0}.section{scroll-margin-top:62px}
+.wrap{max-width:720px;margin:auto;padding:8px 12px 28px}.head{text-align:center;padding:8px 0 10px}.head h1{font-size:21px;margin:0 0 4px}.head p{margin:0;color:var(--m);font-size:13px}
+.nav{display:flex;gap:7px;margin-bottom:10px}.nav button,.nav a{flex:1;text-align:center;text-decoration:none;border:1px solid var(--line);background:#fff;color:var(--g);padding:9px 7px;border-radius:11px;font-size:13px;font-weight:800}
+.nav button.active{background:var(--gl);border-color:#b8d8c7}.qcard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 3px 14px #0000000a;min-height:360px}
+.top{display:flex;justify-content:space-between;align-items:center;color:var(--m);font-size:13px;margin-bottom:16px}.num{color:var(--g);font-weight:850}.q{font-size:19px;line-height:1.55;font-weight:760;white-space:pre-line;min-height:135px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.actions button{border:0;border-radius:11px;min-height:48px;font-size:15px;font-weight:800}.answerBtn{background:var(--g);color:#fff}.saveBtn{background:#fff7dc;color:var(--gold);border:1px solid #ead58b!important}.saveBtn.saved{background:#fff0b8}.ans{display:none;margin-top:13px;padding:14px;background:var(--gl);border-radius:12px;line-height:1.6;font-size:14px;white-space:pre-line}.ans.show{display:block}.ans b{color:var(--g)}
+.move{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.move button{border:1px solid var(--line);background:#fff;color:var(--g);border-radius:11px;min-height:46px;font-weight:800;font-size:14px}.move button:disabled{opacity:.35}
+.savedList{display:grid;gap:8px}.savedItem{border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px;text-align:left}.savedItem b{color:var(--g);margin-right:7px}.empty{text-align:center;color:var(--m);padding:55px 10px}.note{text-align:center;color:var(--m);font-size:11px;margin:13px 0}@media(max-width:480px){.wrap{padding:5px 9px 20px}.head{padding:4px 0 7px}.qcard{padding:15px;min-height:330px}.q{font-size:18px;min-height:120px}.nav button,.nav a{padding:8px 5px}}
 </style></head><body><main class="wrap"><header class="head"><h1>참고 : 심판용</h1><p>3급 심판 실전 연습문제 100 · 주관식 자율학습</p></header>
-<nav class="nav"><a class="home" href="./">← 회차 목록</a><a href="#s1">1~25</a><a href="#s26">26~50</a><a href="#s51">51~75</a><a href="#s76">76~100</a></nav>
+<nav class="nav"><a href="./">← 회차 목록</a><button id="allTab" class="active" onclick="showAll()">전체 문제</button><button id="savedTab" onclick="showSaved()">저장 문제 <span id="savedCount"></span></button></nav>
 <section id="app"></section><p class="note">정답은 대한파크골프협회 표준교재·자격검정 문제집·경기규칙을 우선하고, 제공된 심판시험 대비 자료를 참고하여 정리했습니다.</p></main>
 <script>
 const data=[
@@ -115,6 +118,20 @@ const data=[
 ["2번 홀부터 샷의 순서를 정할 때 적용하는 방법으로 옳은 것은?\n\n가. 1번 홀에서 정한 순서를 그대로 적용한다.\n나. 1번 홀에서 먼저 홀아웃한 순서대로 한다.\n다. 전 홀의 타수가 적은 순서대로 적용한다.\n라. 1번 홀과 같은 방법으로 다시 순서를 정한다.","정답: 다. 전 홀의 타수가 적은 순서대로 적용한다. 동타의 세부 순서는 경기규칙 및 대회 운영기준을 확인한다.","정답 다"]
 ];
 const app=document.getElementById("app");
-app.innerHTML=data.map((x,i)=>'<article class="qcard section" id="'+([0,25,50,75].includes(i)?'s'+(i+1):'q'+(i+1))+'"><div class="num">문제 '+(i+1)+'</div><div class="q">'+x[0]+'</div><button class="toggle" onclick="toggle(this)">정답 확인</button><div class="ans"><b>모범답안</b>\n'+x[1]+'\n\n<b>핵심</b> '+x[2]+'</div></article>').join("");
-function toggle(b){const a=b.nextElementSibling,show=!a.classList.contains("show");a.classList.toggle("show",show);b.textContent=show?"정답 닫기":"정답 확인"}
+const SAVEKEY="pg_referee_saved_v1";
+let idx=Number(localStorage.getItem("pg_referee_pos")||0); if(idx<0||idx>=data.length)idx=0;
+let mode="all";
+function saved(){try{return JSON.parse(localStorage.getItem(SAVEKEY)||"[]")}catch(e){return[]}}
+function setSaved(a){localStorage.setItem(SAVEKEY,JSON.stringify(a));updateCount()}
+function updateCount(){const n=saved().length;document.getElementById("savedCount").textContent=n?"("+n+")":""}
+function showAll(){mode="all";document.getElementById("allTab").classList.add("active");document.getElementById("savedTab").classList.remove("active");render()}
+function showSaved(){mode="saved";document.getElementById("savedTab").classList.add("active");document.getElementById("allTab").classList.remove("active");renderSaved()}
+function render(){localStorage.setItem("pg_referee_pos",idx);const x=data[idx],s=saved().includes(idx);app.innerHTML='<article class="qcard"><div class="top"><span class="num">문제 '+(idx+1)+'</span><span>'+(idx+1)+' / '+data.length+'</span></div><div class="q">'+x[0]+'</div><div class="actions"><button class="answerBtn" onclick="toggleAnswer()">정답 확인</button><button class="saveBtn '+(s?'saved':'')+'" onclick="toggleSave()">'+(s?'★ 저장됨':'☆ 문제 저장')+'</button></div><div class="ans" id="ans"><b>모범답안</b>\n'+x[1]+'\n\n<b>핵심</b> '+x[2]+'</div><div class="move"><button onclick="prev()" '+(idx===0?'disabled':'')+'>← 이전 문제</button><button onclick="next()" '+(idx===data.length-1?'disabled':'')+'>다음 문제 →</button></div></article>'}
+function toggleAnswer(){const a=document.getElementById("ans"),b=document.querySelector(".answerBtn"),on=!a.classList.contains("show");a.classList.toggle("show",on);b.textContent=on?"정답 닫기":"정답 확인"}
+function toggleSave(){let a=saved();if(a.includes(idx))a=a.filter(n=>n!==idx);else a.push(idx);a.sort((x,y)=>x-y);setSaved(a);render()}
+function prev(){if(idx>0){idx--;render();scrollTo({top:0,behavior:"smooth"})}}
+function next(){if(idx<data.length-1){idx++;render();scrollTo({top:0,behavior:"smooth"})}}
+function renderSaved(){const a=saved();if(!a.length){app.innerHTML='<div class="qcard empty">저장한 문제가 없습니다.<br>문제 화면에서 <b>☆ 문제 저장</b>을 눌러 저장하세요.</div>';return}app.innerHTML='<div class="savedList">'+a.map(n=>'<button class="savedItem" onclick="openSaved('+n+')"><b>문제 '+(n+1)+'</b>'+data[n][0].replace(/\\n/g," ").slice(0,72)+'</button>').join("")+'</div>'}
+function openSaved(n){idx=n;showAll();scrollTo({top:0,behavior:"smooth"})}
+updateCount();render();
 </script></body></html>
